@@ -1,66 +1,67 @@
-package main
+package cfmt
 
 import (
-	"github.com/gookit/color"
+	"fmt"
+	"io"
+	"os"
 
-	cfmt "github.com/i582/cfmt/cmd"
+	"github.com/i582/cfmt/internal/parser"
 )
 
-func main() {
+func Sprint(a ...interface{}) string {
+	text := fmt.Sprint(a...)
+	p := parser.Parser{}
+	parsed := p.Parse(text)
+	return parsed
+}
 
-	cfmt.RegisterStyle("code", func(s string) string {
-		return cfmt.Sprintf("{{%s}}::red|underline", s)
-	})
+func Fprint(w io.Writer, a ...interface{}) (n int, err error) {
+	text := Sprint(a...)
+	return fmt.Fprint(w, text)
+}
 
-	// cfmt.Printf("{{Count}} {{sss}}:: ")
+func Print(a ...interface{}) (n int, err error) {
+	return Fprint(os.Stdout, a...)
+}
 
-	cfmt.Printf("{{Count of lines}}::#ff0|bold|underline: {{%s}}::#E06C75|bold\n", "Hello World")
-	cfmt.Printf("This is red::red color")
-	cfmt.Printf(`
-	
-    {{Example of reports}}::bold
+func Sprintln(a ...interface{}) string {
+	return Sprint(a...) + "\n"
+}
 
-    {{                                                                            }}::bgRed
-    {{                            Critical errors found                           }}::bgRed|#ffffff
-    {{                                                                            }}::bgRed
+func Fprintln(w io.Writer, a ...interface{}) (n int, err error) {
+	text := Sprintln(a...)
+	return fmt.Fprint(w, text)
+}
 
-    {{100}}::#ffffff myStyle := color.{{New(color.FgWhite, color.BgBlack, color.OpBold)}}::code
-        {{[100, 17]}}::blue Undefined function New at {{~/projects/test}}::underline:100
+func Println(a ...interface{}) (n int, err error) {
+	return Fprintln(os.Stdout, a...)
+}
 
-    {{101}}::#ffffff {{myStyle}}::code.Print("t")
-        {{[101, 0]}}::blue Undefined variable myStyle at {{~/projects/test}}::underline:101
+func Sprintf(format string, a ...interface{}) string {
+	text := fmt.Sprintf(format, a...)
+	p := parser.Parser{}
+	parsed := p.Parse(text)
+	return parsed
+}
 
-`)
+func Fprintf(w io.Writer, format string, a ...interface{}) (n int, err error) {
+	text := Sprintf(format, a...)
+	return fmt.Fprint(w, text)
+}
 
-	myStyle := color.New(color.FgWhite, color.BgBlack, color.OpBold)
-	myStyle.Print("t")
+func Printf(format string, a ...interface{}) (n int, err error) {
+	text := Sprintf(format, a...)
+	return fmt.Print(text)
+}
 
-	// 	cfmt.Printf(`
-	//    {{              }}::bgRed           {{              }}::bgRed           {{              }}::bgRed
-	//    {{              }}::bgRed           {{              }}::bgRed           {{              }}::bgRed
-	//    {{    About     }}::bgRed           {{     This     }}::bgRed           {{     Tool     }}::bgRed
-	//    {{              }}::bgRed           {{              }}::bgRed           {{              }}::bgRed
-	//    {{              }}::bgRed           {{              }}::bgRed           {{              }}::bgRed
-	//
-	// `)
+func Fatalf(format string, a ...interface{}) {
+	text := Sprintf(format, a...)
+	fmt.Print(text)
+	os.Exit(1)
+}
 
-	// 	code := `
-	//     {{About PHPStats v0.1.0}}::#ff0000|bold|bgBlack
-	//
-	//   PHPStats::red|bgBlack is a tool for {{collecting project statistics}}::italic|grey|bgBlack and {{building}}::italic|grey|bgBlack
-	//   {{dependency graphs}}::italic|grey|bgBlack for PHP, that allows you to find places in the code
-	//   that can be improved.
-	//
-	//   It tries to be fast, {{~150k LOC/s}}::red|italic|bgBlack ({{lines of code per second}}::italic) on Core i5
-	//   with SSD with ~3500Mb/s for reading.
-	//
-	//   This tool is written in Go and uses NoVerify::underline({{https://github.com/VKCOM/noverify}}::blue|underline).
-	//
-	//   Author::yellow: {{Petr Makhnev}}::red|bgBlack (tg: {{@petr_makhnev}}::blue|underline)
-	//
-	//   MIT (c) 2020
-	//
-	// `
-	//
-	// 	cfmt.Printf(code)
+func Fatal(a ...interface{}) {
+	text := Sprint(a...)
+	fmt.Print(text)
+	os.Exit(1)
 }
