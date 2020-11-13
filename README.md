@@ -147,11 +147,11 @@ cfmt.Printf(`
 
 | Styles                                                 |
 | ------------------------------------------------------ |
-| *Italic*                                               |
-| **Bold**                                               |
-| ~~CrossOut~~                                           |
-| <ins>Underline</ins>                                   |
-| <span style="text-decoration:overline">Overline</span> |
+| *italic*                                               |
+| **bold**                                               |
+| ~~crossout~~                                           |
+| <ins>underline</ins>                                   |
+| <span style="text-decoration:overline">overline</span> |
 
 
 | Colors  |              |               |           |
