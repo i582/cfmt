@@ -1,6 +1,6 @@
 ![](doc/logo.png)
 
-[![Build Status](https://travis-ci.org/i582/cfmt.svg?branch=master)](https://travis-ci.org/gookit/color) [![Go Report Card](https://goreportcard.com/badge/github.com/i582/cfmt)](https://goreportcard.com/report/github.com/i582/cfmt) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/i582/phpstats/master/LICENSE) ![](https://img.shields.io/badge/-%3C%3E%20with%20%E2%9D%A4-red)
+[![Build Status](https://travis-ci.org/i582/cfmt.svg?branch=master)](https://travis-ci.org/i582/cfmt) [![Go Report Card](https://goreportcard.com/badge/github.com/i582/cfmt)](https://goreportcard.com/report/github.com/i582/cfmt) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/i582/phpstats/master/LICENSE) ![](https://img.shields.io/badge/-%3C%3E%20with%20%E2%9D%A4-red)
 
 # cfmt
 
