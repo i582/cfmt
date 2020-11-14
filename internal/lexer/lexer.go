@@ -1,7 +1,7 @@
 package lexer
 
 import (
-	"unicode"
+	"strings"
 )
 
 type tokenType uint8
@@ -21,8 +21,8 @@ type token struct {
 type Lexer struct{}
 
 func (l *Lexer) Tokenize(format string) []token {
-	var tokens []token
-	var tempToken string
+	var tokens = make([]token, 0, strings.Count(format, "::"))
+	var tempToken = make([]rune, 0, 20)
 
 	var inFormat bool
 	var inStartFormat bool
@@ -37,12 +37,12 @@ func (l *Lexer) Tokenize(format string) []token {
 	for index, s := range format {
 		// find {{
 		if s == '{' && index+1 < len(format) && format[index+1] == '{' {
-			if tempToken != "" {
+			if len(tempToken) != 0 {
 				tokens = append(tokens, token{
-					Value: tempToken,
+					Value: string(tempToken),
 					Type:  Text,
 				})
-				tempToken = ""
+				tempToken = nil
 			}
 			inFormatGroup = true
 			inStartFormatGroup = true
@@ -81,27 +81,27 @@ func (l *Lexer) Tokenize(format string) []token {
 				lastIsFormatGroup = true
 				needCheckFormatGroupStyle = true
 				tokens = append(tokens, token{
-					Value: tempToken,
+					Value: string(tempToken),
 					Type:  Text,
 				})
-				tempToken = ""
+				tempToken = nil
 				continue
 			}
 
-			tempToken += string(s)
+			tempToken = append(tempToken, s)
 			continue
 		}
 
 		// ::
 		if s == ':' && index+1 < len(format) && format[index+1] == ':' && index+2 < len(format) && format[index+2] != ' ' {
-			if tempToken != "" {
+			if len(tempToken) != 0 {
 				tokens = append(tokens, token{
-					Value: tempToken,
+					Value: string(tempToken),
 					Type:  Text,
 				})
 			}
 
-			tempToken = ""
+			tempToken = nil
 			inFormat = true
 			inStartFormat = true
 			continue
@@ -114,26 +114,27 @@ func (l *Lexer) Tokenize(format string) []token {
 		}
 
 		if inFormat {
-			if !unicode.IsLetter(s) && s != '|' && !unicode.IsDigit(s) && s != '#' {
+			if !(s >= 'a' && s <= 'z' || s >= 'A' && s <= 'Z') && s != '|' && !(s >= '0' && s <= '9') && s != '#' {
 				tp := FormatWord
 				if lastIsFormatGroup {
 					tp = FormatGroup
 					lastIsFormatGroup = false
 				}
 				tokens = append(tokens, token{
-					Value: tempToken,
+					Value: string(tempToken),
 					Type:  tp,
 				})
-				tempToken = string(s)
+				tempToken = make([]rune, 0, 20)
+				tempToken = append(tempToken, s)
 				inFormat = false
 				continue
 			}
 		}
 
-		tempToken += string(s)
+		tempToken = append(tempToken, s)
 	}
 
-	if tempToken != "" {
+	if len(tempToken) != 0 {
 		tp := Text
 		if lastIsFormatGroup {
 			tp = FormatGroup
@@ -141,7 +142,7 @@ func (l *Lexer) Tokenize(format string) []token {
 			tp = FormatWord
 		}
 		tokens = append(tokens, token{
-			Value: tempToken,
+			Value: string(tempToken),
 			Type:  tp,
 		})
 	}
