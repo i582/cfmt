@@ -11,7 +11,6 @@
 * [Install](#install)
 * [Usage](#usage)
   * [Simple usage](#simple-usage)
-  * [One word syntax](#one-word-syntax)
   * [Complex style](#complex-style)
   * [Custom styles](#custom-styles)
   * [HEX colors](#hex-colors)
@@ -48,14 +47,6 @@ If we compare this with the `gookit/color` library, then this example looks more
 
 ```go
 fmt.Printf("This is a %s", color.Red.Sprintf("red color"))
-```
-
-### One word syntax
-
-If you want to highlight one word, then the parentheses can be omitted:
-
-```go
-cfmt.Println("This is a red::red color")
 ```
 
 ### Complex style

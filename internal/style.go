@@ -3,6 +3,8 @@ package internal
 import (
 	"fmt"
 	"strings"
+
+	"github.com/gookit/color"
 )
 
 func styleBuilder(styleString string) (func(string) string, error) {
@@ -10,11 +12,15 @@ func styleBuilder(styleString string) (func(string) string, error) {
 		return nil, fmt.Errorf("style string is empty")
 	}
 
-	styleParts := strings.Split(styleString, "|")
+	var styleParts = strings.Split(styleString, "|")
 
-	var funcs []styleCallback
 	var hexColorFuncs []func(string, func(string) string) func(string) string
 	var hexColors []string
+
+	var customStyles []func(func(string) string) func(string) string
+
+	var colors = make([]color.Color, 0, len(styleParts))
+	color.New()
 
 	for _, style := range styleParts {
 		if isHex(style) {
@@ -40,30 +46,39 @@ func styleBuilder(styleString string) (func(string) string, error) {
 			continue
 		}
 
-		fn, ok := Map[style]
+		clr, ok := Map[style]
 		if !ok {
-			return nil, fmt.Errorf("unknown style %s", style)
-		}
+			customStyle, ok := CustomMap[style]
+			if !ok {
+				return nil, fmt.Errorf("unknown style %s", style)
+			}
 
-		funcs = append(funcs, fn)
+			customStyles = append(customStyles, customStyle)
+			continue
+		}
+		colors = append(colors, clr)
 	}
 
 	outFun := func(text string) string { return text }
-
-	for _, fun := range funcs {
-		outFun = fun(outFun)
-	}
 
 	for index, fun := range hexColorFuncs {
 		if index < 0 || index >= len(hexColors) {
 			continue
 		}
 
-		color := hexColors[index]
-		outFun = fun(color, outFun)
+		clr := hexColors[index]
+		outFun = fun(clr, outFun)
 	}
 
-	return outFun, nil
+	for _, style := range customStyles {
+		outFun = style(outFun)
+	}
+
+	colorStyle := color.New(colors...)
+
+	return func(s string) string {
+		return outFun(colorStyle.Sprint(s))
+	}, nil
 }
 
 func isHex(val string) bool {

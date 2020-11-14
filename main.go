@@ -19,7 +19,7 @@ import (
 // The first argument is the name by which this style will be used,
 // and the second is the styling function itself.
 func RegisterStyle(name string, fn func(string) string) {
-	internal.Map[name] = func(f func(text string) string) func(text string) string {
+	internal.CustomMap[name] = func(f func(text string) string) func(text string) string {
 		return func(text string) string {
 			t := f(text)
 			t = fn(t)
