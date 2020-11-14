@@ -1,4 +1,4 @@
-package styles
+package internal
 
 import (
 	"testing"
@@ -48,7 +48,7 @@ func TestStyleBuilder(t *testing.T) {
 	}
 
 	for _, suite := range suites {
-		_, err := StyleBuilder(suite.Value)
+		_, err := styleBuilder(suite.Value)
 		if err == nil && suite.Error != "" {
 			t.Error(cmp.Diff("", suite.Error))
 			continue

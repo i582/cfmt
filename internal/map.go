@@ -1,8 +1,8 @@
-package styles
+package internal
 
-type StyleCallback func(func(string) string) func(string) string
+type styleCallback func(func(string) string) func(string) string
 
-var Map = map[string]StyleCallback{
+var Map = map[string]styleCallback{
 	"red":          Red,
 	"cyan":         Cyan,
 	"gray":         Gray,
