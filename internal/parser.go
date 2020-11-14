@@ -119,11 +119,13 @@ func Parse(format string) string {
 	if len(lastToken) != 0 {
 		if lastIsFormatGroup {
 			lastToken = groupStyle(format, lastToken, string(tempToken))
+			resParts = append(resParts, lastToken)
 		} else if inFormat {
 			lastToken = singleStyle(format, lastToken, string(tempToken))
+			resParts = append(resParts, lastToken)
+		} else {
+			resParts = append(resParts, string(tempToken))
 		}
-
-		resParts = append(resParts, string(tempToken))
 	}
 
 	return strings.Join(resParts, "")

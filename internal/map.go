@@ -2,6 +2,7 @@ package internal
 
 type styleCallback func(func(string) string) func(string) string
 
+// Map is the styles map
 var Map = map[string]styleCallback{
 	"red":          Red,
 	"cyan":         Cyan,
