@@ -16,7 +16,7 @@
   * [Custom styles](#custom-styles)
   * [HEX colors](#hex-colors)
   * [Background color](#background-color)
-* [Complex example](#complex-example)
+* [Other examples](#other-examples)
 * [Supported colors and styles](#supported-colors-and-styles)
 * [Motivation](#motivation)
 * [Contact](#contact)
@@ -114,18 +114,22 @@ cfmt.Println("This is a {{red color}}::#ff0000")
 To set the background color, you need to add the prefix `bg` to the color, in the case of standard colors, the first letter of the color must be capitalized:
 
 ```go
- cfmt.Println("This is a {{red color}}::bgRed")
+cfmt.Println("This is a {{red color}}::bgRed")
 ```
 
 For HEX it will look like this:
 
 ```go
- cfmt.Println("This is a {{red color}}::bg#ff0000")
+cfmt.Println("This is a {{red color}}::bg#ff0000")
 ```
 
-## Complex example
+## Other examples
 
 ```go
+cfmt.RegisterStyle("code", func(s string) string {
+	return cfmt.Sprintf("{{%s}}::red|underline", s)
+})
+
 cfmt.Printf(`
     {{Example of reports}}::bold
 
@@ -142,6 +146,29 @@ cfmt.Printf(`
 ```
 
 ![](doc/example6.png)
+
+```go
+cfmt.Print(`
+        {{                 -/+:.          }}::green
+        {{                :++++.          }}::green
+        {{               /+++/.           }}::green
+        {{       .:-::- .+/:-''.::-       }}::green
+        {{    .:/++++++/::::/++++++//:    }}::green
+        {{  .:///////////////////////:    }}::yellow
+        {{  ////////////////////////      }}::yellow
+        {{ -+++++++++++++++++++++++       }}::red
+        {{ /++++++++++++++++++++++/       }}::red
+        {{ /sssssssssssssssssssssss.      }}::red
+        {{ :ssssssssssssssssssssssss-     }}::red
+        {{  osssssssssssssssssssssssso/   }}::magenta
+        {{   syyyyyyyyyyyyyyyyyyyyyyyy+   }}::magenta
+        {{    ossssssssssssssssssssss/    }}::blue
+        {{      :ooooooooooooooooooo+.    }}::blue
+        {{       :+oo+/:-..-:/+o+/-       }}::blue
+`)
+```
+
+![](doc/example7.svg)
 
 ## Supported colors and styles
 
