@@ -1,18 +1,18 @@
-package styles
+package internal
 
 import (
 	"fmt"
 	"strings"
 )
 
-func StyleBuilder(styleString string) (func(string) string, error) {
+func styleBuilder(styleString string) (func(string) string, error) {
 	if styleString == "" {
 		return nil, fmt.Errorf("style string is empty")
 	}
 
 	styleParts := strings.Split(styleString, "|")
 
-	var funcs []StyleCallback
+	var funcs []styleCallback
 	var hexColorFuncs []func(string, func(string) string) func(string) string
 	var hexColors []string
 
@@ -23,19 +23,20 @@ func StyleBuilder(styleString string) (func(string) string, error) {
 				return nil, err
 			}
 
-			hexColorFuncs = append(hexColorFuncs, HexForegroundColor)
+			hexColorFuncs = append(hexColorFuncs, hexForegroundColor)
 			hexColors = append(hexColors, style)
 			continue
 		}
 
 		if isBackgroundHex(style) {
-			err := checkHex(strings.TrimPrefix(style, "bg"))
+			rawHex := strings.TrimPrefix(style, "bg")
+			err := checkHex(rawHex)
 			if err != nil {
 				return nil, err
 			}
 
-			hexColorFuncs = append(hexColorFuncs, HexBackgroundColor)
-			hexColors = append(hexColors, strings.TrimPrefix(style, "bg"))
+			hexColorFuncs = append(hexColorFuncs, hexBackgroundColor)
+			hexColors = append(hexColors, rawHex)
 			continue
 		}
 
@@ -54,11 +55,11 @@ func StyleBuilder(styleString string) (func(string) string, error) {
 	}
 
 	for index, fun := range hexColorFuncs {
-		var color string
-		if index >= 0 && index < len(hexColors) {
-			color = hexColors[index]
+		if index < 0 || index >= len(hexColors) {
+			continue
 		}
 
+		color := hexColors[index]
 		outFun = fun(color, outFun)
 	}
 

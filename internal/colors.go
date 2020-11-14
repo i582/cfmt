@@ -1,11 +1,11 @@
-package styles
+package internal
 
 import (
 	"github.com/gookit/color"
 	"github.com/muesli/termenv"
 )
 
-func HexForegroundColor(cl string, f func(text string) string) func(text string) string {
+func hexForegroundColor(cl string, f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
 		out := termenv.String(t)
@@ -16,7 +16,7 @@ func HexForegroundColor(cl string, f func(text string) string) func(text string)
 	}
 }
 
-func HexBackgroundColor(cl string, f func(text string) string) func(text string) string {
+func hexBackgroundColor(cl string, f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
 		out := termenv.String(t)
@@ -27,6 +27,7 @@ func HexBackgroundColor(cl string, f func(text string) string) func(text string)
 	}
 }
 
+// Provides a color.
 func Red(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -35,6 +36,7 @@ func Red(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func Cyan(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -43,6 +45,7 @@ func Cyan(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func Gray(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -51,6 +54,7 @@ func Gray(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func Blue(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -59,6 +63,7 @@ func Blue(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func Black(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -67,6 +72,7 @@ func Black(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func Green(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -75,6 +81,7 @@ func Green(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func White(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -83,6 +90,7 @@ func White(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func Yellow(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -91,6 +99,7 @@ func Yellow(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func Magenta(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -99,6 +108,7 @@ func Magenta(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func LightRed(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -107,6 +117,7 @@ func LightRed(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func LightCyan(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -115,6 +126,7 @@ func LightCyan(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func LightBlue(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -123,6 +135,7 @@ func LightBlue(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func LightGreen(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -131,6 +144,7 @@ func LightGreen(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func LightWhite(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -139,6 +153,7 @@ func LightWhite(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func LightYellow(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -147,6 +162,7 @@ func LightYellow(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func LightMagenta(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -155,6 +171,7 @@ func LightMagenta(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func BgBlack(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -163,6 +180,7 @@ func BgBlack(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func BgRed(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -171,6 +189,7 @@ func BgRed(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func BgGreen(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -179,6 +198,7 @@ func BgGreen(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func BgYellow(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -187,6 +207,7 @@ func BgYellow(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func BgBlue(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -195,6 +216,7 @@ func BgBlue(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func BgMagenta(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -203,6 +225,7 @@ func BgMagenta(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func BgWhite(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -211,6 +234,7 @@ func BgWhite(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func BgCyan(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -219,6 +243,7 @@ func BgCyan(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func BgDefault(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -227,6 +252,7 @@ func BgDefault(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func BgDarkGray(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -235,6 +261,7 @@ func BgDarkGray(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func BgLightRed(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -243,6 +270,7 @@ func BgLightRed(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func BgLightGreen(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -251,6 +279,7 @@ func BgLightGreen(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func BgLightYellow(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -259,6 +288,7 @@ func BgLightYellow(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func BgLightBlue(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -267,6 +297,7 @@ func BgLightBlue(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func BgLightMagenta(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -275,6 +306,7 @@ func BgLightMagenta(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func BgLightCyan(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -283,6 +315,7 @@ func BgLightCyan(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func BgLightWhite(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
@@ -291,6 +324,7 @@ func BgLightWhite(f func(text string) string) func(text string) string {
 	}
 }
 
+// Provides a color.
 func BgGray(f func(text string) string) func(text string) string {
 	return func(text string) string {
 		t := f(text)
