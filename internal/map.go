@@ -4,10 +4,8 @@ import (
 	"github.com/gookit/color"
 )
 
-type styleCallback func(func(string) string) func(string) string
-
 // CustomMap is the custom styles map
-var CustomMap = map[string]styleCallback{
+var CustomMap = map[string]func(string) string{
 	"overline": overline,
 	"faint":    faint,
 	"reverse":  reverse,

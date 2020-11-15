@@ -4,64 +4,44 @@ import (
 	"github.com/muesli/termenv"
 )
 
-func overline(f func(text string) string) func(text string) string {
-	return func(text string) string {
-		t := f(text)
-		out := termenv.String(t)
-		out = out.Overline()
-		t = out.String()
-		return t
-	}
+var colorProfile termenv.Profile
+
+func init() {
+	colorProfile = termenv.ColorProfile()
 }
 
-func reverse(f func(text string) string) func(text string) string {
-	return func(text string) string {
-		t := f(text)
-		out := termenv.String(t)
-		out = out.Reverse()
-		t = out.String()
-		return t
-	}
+func overline(text string) string {
+	out := termenv.String(text)
+	out = out.Overline()
+	return out.String()
 }
 
-func blink(f func(text string) string) func(text string) string {
-	return func(text string) string {
-		t := f(text)
-		out := termenv.String(t)
-		out = out.Blink()
-		t = out.String()
-		return t
-	}
+func reverse(text string) string {
+	out := termenv.String(text)
+	out = out.Reverse()
+	return out.String()
 }
 
-func faint(f func(text string) string) func(text string) string {
-	return func(text string) string {
-		t := f(text)
-		out := termenv.String(t)
-		out = out.Faint()
-		t = out.String()
-		return t
-	}
+func blink(text string) string {
+	out := termenv.String(text)
+	out = out.Blink()
+	return out.String()
 }
 
-func hexForegroundColor(cl string, f func(text string) string) func(text string) string {
-	return func(text string) string {
-		t := f(text)
-		out := termenv.String(t)
-		p := termenv.ColorProfile()
-		out = out.Foreground(p.Color(cl))
-		t = out.String()
-		return t
-	}
+func faint(text string) string {
+	out := termenv.String(text)
+	out = out.Faint()
+	return out.String()
 }
 
-func hexBackgroundColor(cl string, f func(text string) string) func(text string) string {
-	return func(text string) string {
-		t := f(text)
-		out := termenv.String(t)
-		p := termenv.ColorProfile()
-		out = out.Background(p.Color(cl))
-		t = out.String()
-		return t
-	}
+func hexBackgroundColorFunc(cl string, text string) string {
+	out := termenv.String(text)
+	out = out.Background(colorProfile.Color(cl))
+	return out.String()
+}
+
+func hexForegroundColorFunc(cl string, text string) string {
+	out := termenv.String(text)
+	out = out.Foreground(colorProfile.Color(cl))
+	return out.String()
 }

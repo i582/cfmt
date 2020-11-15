@@ -142,10 +142,10 @@ func Parse(format string) string {
 }
 
 func groupStyle(format string, token string, style string) string {
-	styler, err := StyleBuilder(style)
+	styleText, err := StyleBuilder(style, token)
 	if err != nil {
 		log.Fatalf("Error parse style string in '%s' format string: %v", format, err)
 	}
 
-	return styler(token)
+	return styleText
 }

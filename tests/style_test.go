@@ -63,7 +63,7 @@ func TestStyleBuilder(t *testing.T) {
 	}
 
 	for _, suite := range suites {
-		_, err := internal.StyleBuilder(suite.Value)
+		_, err := internal.StyleBuilder(suite.Value, "")
 		if err == nil && suite.Error != "" {
 			t.Error(cmp.Diff("", suite.Error))
 			continue
