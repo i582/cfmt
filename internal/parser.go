@@ -33,6 +33,7 @@ func Parse(format string) string {
 					resParts = append(resParts, string(tempToken))
 					tempToken = nil
 				}
+
 				inFormatGroup = true
 				inFormat = false
 				inText = false
@@ -81,7 +82,6 @@ func Parse(format string) string {
 			}
 
 			if s == '}' && index+1 < len(format) && format[index+1] == '}' {
-
 				inFormatGroup = false
 				inFormat = false
 				inText = true
@@ -142,7 +142,7 @@ func Parse(format string) string {
 }
 
 func groupStyle(format string, token string, style string) string {
-	styler, err := styleBuilder(style)
+	styler, err := StyleBuilder(style)
 	if err != nil {
 		log.Fatalf("Error parse style string in '%s' format string: %v", format, err)
 	}

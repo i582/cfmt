@@ -7,7 +7,9 @@ import (
 	"github.com/gookit/color"
 )
 
-func styleBuilder(styleString string) (func(string) string, error) {
+// StyleBuilder is a function that returns a callback function that will style
+// the supplied string according to the supplied format string.
+func StyleBuilder(styleString string) (func(string) string, error) {
 	if styleString == "" {
 		return nil, fmt.Errorf("style string is empty")
 	}
@@ -62,10 +64,6 @@ func styleBuilder(styleString string) (func(string) string, error) {
 	outFun := func(text string) string { return text }
 
 	for index, fun := range hexColorFuncs {
-		if index < 0 || index >= len(hexColors) {
-			continue
-		}
-
 		clr := hexColors[index]
 		outFun = fun(clr, outFun)
 	}

@@ -1,9 +1,12 @@
-package internal
+package tests
 
 import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+
+	"github.com/i582/cfmt"
+	"github.com/i582/cfmt/internal"
 )
 
 type StyleBuilderSuite struct {
@@ -12,6 +15,10 @@ type StyleBuilderSuite struct {
 }
 
 func TestStyleBuilder(t *testing.T) {
+	cfmt.RegisterStyle("code", func(s string) string {
+		return cfmt.Sprintf("{{%s}}::red|underline", s)
+	})
+
 	suites := []StyleBuilderSuite{
 		{
 			Value: "red",
@@ -27,6 +34,14 @@ func TestStyleBuilder(t *testing.T) {
 		},
 		{
 			Value: "bg#ff00ff|bold",
+			Error: "",
+		},
+		{
+			Value: "code|underline|blink",
+			Error: "",
+		},
+		{
+			Value: "overline|reverse|faint",
 			Error: "",
 		},
 		{
@@ -48,7 +63,7 @@ func TestStyleBuilder(t *testing.T) {
 	}
 
 	for _, suite := range suites {
-		_, err := styleBuilder(suite.Value)
+		_, err := internal.StyleBuilder(suite.Value)
 		if err == nil && suite.Error != "" {
 			t.Error(cmp.Diff("", suite.Error))
 			continue
