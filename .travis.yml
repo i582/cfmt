@@ -5,3 +5,5 @@ install:
   - # Prevent default install action "go get -t -v ./...".
 script:
   - make check
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
