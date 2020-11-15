@@ -5,7 +5,7 @@ install:
   - # Prevent default install action "go get -t -v ./...".
 script:
   - make check
-  - ./go.test.sh
+  - go test -race -coverprofile=coverage.txt -covermode=atomic
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
