@@ -170,6 +170,9 @@ cfmt.Print(`
 | ~~crossout~~                                           |
 | <ins>underline</ins>                                   |
 | <span style="text-decoration:overline">overline</span> |
+|faint|
+|reverse|
+|blink|
 
 
 | Colors  |              |               |           |

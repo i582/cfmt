@@ -12,9 +12,9 @@ import (
 //
 // It will look like this:
 //
-// cfmt.RegisterStyle("code", func(s string) string {
-//	return cfmt.Sprintf("{{%s}}::red|underline", s)
-// })
+//   cfmt.RegisterStyle("code", func(s string) string {
+//	  return cfmt.Sprintf("{{%s}}::red|underline", s)
+//   })
 //
 // The first argument is the name by which this style will be used,
 // and the second is the styling function itself.

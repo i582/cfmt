@@ -61,9 +61,6 @@ func Parse(format string) string {
 
 			// ::
 			if inEndFormatGroup && s == ':' && index+1 < len(format) && format[index+1] == ':' && index+2 < len(format) && format[index+2] != ' ' {
-				// lastToken = string(tempToken)
-				// tempToken = nil
-
 				inFormatGroup = false
 				inFormat = true
 				inText = false

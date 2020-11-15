@@ -6,9 +6,12 @@ import (
 
 type styleCallback func(func(string) string) func(string) string
 
-// Map is the custom styles map
+// CustomMap is the custom styles map
 var CustomMap = map[string]styleCallback{
 	"overline": overline,
+	"faint":    faint,
+	"reverse":  reverse,
+	"blink":    blink,
 }
 
 // Map is the styles map
