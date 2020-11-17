@@ -71,20 +71,17 @@ func Fprintf(w io.Writer, format string, a ...interface{}) (n int, err error) {
 
 // Printf is the same as fmt.
 func Printf(format string, a ...interface{}) (n int, err error) {
-	text := Sprintf(format, a...)
-	return fmt.Print(text)
+	return Fprintf(os.Stdout, format, a...)
 }
 
 // Fatalf is the same as fmt.
 func Fatalf(format string, a ...interface{}) {
-	text := Sprintf(format, a...)
-	fmt.Print(text)
+	Printf(format, a...)
 	os.Exit(1)
 }
 
 // Fatal is the same as fmt.
 func Fatal(a ...interface{}) {
-	text := Sprint(a...)
-	fmt.Print(text)
+	Print(a...)
 	os.Exit(1)
 }
