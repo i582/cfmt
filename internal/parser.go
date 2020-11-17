@@ -7,8 +7,10 @@ import (
 
 // Parse parses the passed format string and applies styles, returning a styled string.
 func Parse(format string) string {
-	var tempToken = make([]rune, 0, 20)
-	var resParts = make([]string, 0, strings.Count(format, "::"))
+	var tempToken = make([]byte, 0, 50)
+	var resParts = make([]string, 0, 50)
+	var formatSlice = make([]string, 0, 5)
+
 	var lastToken string
 
 	var inText bool
@@ -25,13 +27,15 @@ func Parse(format string) string {
 
 	inText = true
 
-	for index, s := range format {
+	for index := 0; index < len(format); index++ {
+		s := format[index]
+
 		if inText {
 			// find {{
 			if s == '{' && index+1 < len(format) && format[index+1] == '{' {
 				if len(tempToken) != 0 {
 					resParts = append(resParts, string(tempToken))
-					tempToken = nil
+					tempToken = tempToken[:0]
 				}
 
 				inFormatGroup = true
@@ -92,7 +96,7 @@ func Parse(format string) string {
 
 				lastToken = string(tempToken)
 
-				tempToken = nil
+				tempToken = tempToken[:0]
 				continue
 			}
 
@@ -107,13 +111,22 @@ func Parse(format string) string {
 				continue
 			}
 
-			if !(s >= 'a' && s <= 'z' || s >= 'A' && s <= 'Z') && s != '|' && !(s >= '0' && s <= '9') && s != '#' {
-				lastToken = groupStyle(format, lastToken, string(tempToken))
+			if s == '|' {
+				formatSlice = append(formatSlice, string(tempToken))
+				tempToken = tempToken[:0]
+				continue
+			}
 
+			if !(s >= 'a' && s <= 'z' || s >= 'A' && s <= 'Z') && s != '|' && !(s >= '0' && s <= '9') && s != '#' {
+				formatSlice = append(formatSlice, string(tempToken))
+
+				lastToken = groupStyle(format, lastToken, formatSlice)
 				resParts = append(resParts, lastToken)
 
-				tempToken = make([]rune, 0, 20)
+				tempToken = tempToken[:0]
 				tempToken = append(tempToken, s)
+
+				formatSlice = formatSlice[:0]
 
 				inFormatGroup = false
 				inFormat = false
@@ -129,20 +142,19 @@ func Parse(format string) string {
 		}
 	}
 
-	if lastIsFormatGroup && len(lastToken) != 0 {
-		lastToken = groupStyle(format, lastToken, string(tempToken))
+	if lastIsFormatGroup {
+		formatSlice = append(formatSlice, string(tempToken))
+		lastToken = groupStyle(format, lastToken, formatSlice)
 		resParts = append(resParts, lastToken)
-	}
-
-	if !lastIsFormatGroup && len(tempToken) != 0 {
+	} else {
 		resParts = append(resParts, string(tempToken))
 	}
 
 	return strings.Join(resParts, "")
 }
 
-func groupStyle(format string, token string, style string) string {
-	styleText, err := StyleBuilder(style, token)
+func groupStyle(format string, token string, styles []string) string {
+	styleText, err := StyleBuilder(styles, token)
 	if err != nil {
 		log.Fatalf("Error parse style string in '%s' format string: %v", format, err)
 	}

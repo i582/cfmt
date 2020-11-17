@@ -8,16 +8,15 @@ import (
 )
 
 // StyleBuilder is a function that returns a styled string based on the supplied style.
-func StyleBuilder(styleString string, text string) (string, error) {
-	if styleString == "" {
+func StyleBuilder(styles []string, text string) (string, error) {
+	if len(styles) == 0 {
 		return "", fmt.Errorf("style string is empty")
 	}
 
-	var styleParts = strings.Split(styleString, "|")
-	var colors = make([]color.Color, 0, len(styleParts))
+	var colors = make([]color.Color, 0, len(styles))
 	color.New()
 
-	for _, style := range styleParts {
+	for _, style := range styles {
 		if isHex(style) {
 			err := checkHex(style)
 			if err != nil {

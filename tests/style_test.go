@@ -10,7 +10,7 @@ import (
 )
 
 type StyleBuilderSuite struct {
-	Value string
+	Value []string
 	Error string
 }
 
@@ -21,43 +21,43 @@ func TestStyleBuilder(t *testing.T) {
 
 	suites := []StyleBuilderSuite{
 		{
-			Value: "red",
+			Value: []string{"red"},
 			Error: "",
 		},
 		{
-			Value: "red|bold",
+			Value: []string{"red", "bold"},
 			Error: "",
 		},
 		{
-			Value: "#ff00ff|bold",
+			Value: []string{"#ff00ff", "bold"},
 			Error: "",
 		},
 		{
-			Value: "bg#ff00ff|bold",
+			Value: []string{"bg#ff00ff", "bold"},
 			Error: "",
 		},
 		{
-			Value: "code|underline|blink",
+			Value: []string{"code", "underline", "blink"},
 			Error: "",
 		},
 		{
-			Value: "overline|reverse|faint",
+			Value: []string{"overline", "reverse", "faint"},
 			Error: "",
 		},
 		{
-			Value: "bg#ff0|bold",
+			Value: []string{"bg#ff0", "bold"},
 			Error: "invalid hex: length of hex color must be 6",
 		},
 		{
-			Value: "#ff0|bold",
+			Value: []string{"#ff0", "bold"},
 			Error: "invalid hex: length of hex color must be 6",
 		},
 		{
-			Value: "some|bold",
+			Value: []string{"some", "bold"},
 			Error: "unknown style some",
 		},
 		{
-			Value: "",
+			Value: []string{},
 			Error: "style string is empty",
 		},
 	}
