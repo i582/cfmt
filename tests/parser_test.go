@@ -11,13 +11,13 @@ func TestParse(t *testing.T) {
 		return cfmt.Sprintf("{{%s}}::red|underline", s)
 	})
 
-	cfmt.Println("{{こんにちは, correct group}}::code")
+	cfmt.Println("{{こんにちは, correct group}}::code  sdas")
 	cfmt.Println("{{привет, correct group}}::red|underline and {{other}}::red")
 	cfmt.Print("{{error group}} \n")
 	cfmt.Print("{{overline group}}::overline\n")
 	cfmt.Print("{{reverse group, こんにちは}}::reverse\n")
-	cfmt.Print(cfmt.Sprintln("{{faint group}}::faint"))
+	cfmt.Print(cfmt.Sprintln("{{faint group}}::faint sfafs"))
 	cfmt.Println(cfmt.Sprint("{{blink group}}::blink"))
-	cfmt.Printf("{{hex %s}}::#ff00ff\n", "color group")
-	cfmt.Printf(cfmt.Sprintf("{{background color %s}}::bg#ffff00", "hex color"))
+	cfmt.Printf("{{hex %s}}::#ff00ff sfas\n", "color group")
+	cfmt.Printf(cfmt.Sprintf("{{background color %s}}::bg#ffff00\n", "hex color"))
 }

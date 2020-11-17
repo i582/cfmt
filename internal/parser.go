@@ -7,9 +7,12 @@ import (
 
 // Parse parses the passed format string and applies styles, returning a styled string.
 func Parse(format string) string {
-	var tempToken = make([]byte, 0, 50)
 	var resParts = make([]string, 0, 50)
-	var formatSlice = make([]string, 0, 5)
+
+	var err error
+
+	var tempTokenStartIndex int
+	var tempTokenEndIndex int
 
 	var lastToken string
 
@@ -26,17 +29,18 @@ func Parse(format string) string {
 	var needCheckFormatGroupStyle bool
 
 	inText = true
+	formatLen := len(format)
 
-	for index := 0; index < len(format); index++ {
+	for index := 0; index < formatLen; index++ {
 		s := format[index]
 
 		if inText {
 			// find {{
-			if s == '{' && index+1 < len(format) && format[index+1] == '{' {
-				if len(tempToken) != 0 {
-					resParts = append(resParts, string(tempToken))
-					tempToken = tempToken[:0]
-				}
+			if s == '{' && index+1 < formatLen && format[index+1] == '{' {
+				tempTokenEndIndex = index
+				resParts = append(resParts, format[tempTokenStartIndex:tempTokenEndIndex])
+
+				tempTokenStartIndex = index + 2
 
 				inFormatGroup = true
 				inFormat = false
@@ -55,7 +59,7 @@ func Parse(format string) string {
 			if needCheckFormatGroupStyle {
 				needCheckFormatGroupStyle = false
 
-				if !(s == ':' && index+1 < len(format) && format[index+1] == ':' && index+2 < len(format) && format[index+2] != ' ') {
+				if !(s == ':' && index+1 < formatLen && format[index+1] == ':' && index+2 < formatLen && format[index+2] != ' ') {
 					lastIsFormatGroup = false
 
 					if lastToken != "" {
@@ -65,16 +69,16 @@ func Parse(format string) string {
 			}
 
 			// ::
-			if inEndFormatGroup && s == ':' && index+1 < len(format) && format[index+1] == ':' && index+2 < len(format) && format[index+2] != ' ' {
+			if inEndFormatGroup && s == ':' && index+1 < formatLen && format[index+1] == ':' && index+2 < formatLen && format[index+2] != ' ' {
 				inFormatGroup = false
 				inFormat = true
 				inText = false
 
 				inStartFormat = true
+				tempTokenStartIndex = index + 2
 				continue
 			}
 
-			tempToken = append(tempToken, s)
 			continue
 		}
 
@@ -85,7 +89,7 @@ func Parse(format string) string {
 				continue
 			}
 
-			if s == '}' && index+1 < len(format) && format[index+1] == '}' {
+			if s == '}' && index+1 < formatLen && format[index+1] == '}' {
 				inFormatGroup = false
 				inFormat = false
 				inText = true
@@ -94,13 +98,11 @@ func Parse(format string) string {
 				lastIsFormatGroup = true
 				needCheckFormatGroupStyle = true
 
-				lastToken = string(tempToken)
+				tempTokenEndIndex = index
 
-				tempToken = tempToken[:0]
+				lastToken = format[tempTokenStartIndex:tempTokenEndIndex]
 				continue
 			}
-
-			tempToken = append(tempToken, s)
 			continue
 		}
 
@@ -112,21 +114,30 @@ func Parse(format string) string {
 			}
 
 			if s == '|' {
-				formatSlice = append(formatSlice, string(tempToken))
-				tempToken = tempToken[:0]
+				tempTokenEndIndex = index
+
+				singleFormat := format[tempTokenStartIndex:tempTokenEndIndex]
+				lastToken, err = ApplyStyle(lastToken, singleFormat)
+				if err != nil {
+					log.Fatalf("Error parse style string in '%s' format string: %v", format, err)
+				}
+
+				tempTokenStartIndex = index + 1
 				continue
 			}
 
 			if !(s >= 'a' && s <= 'z' || s >= 'A' && s <= 'Z') && s != '|' && !(s >= '0' && s <= '9') && s != '#' {
-				formatSlice = append(formatSlice, string(tempToken))
+				tempTokenEndIndex = index
 
-				lastToken = groupStyle(format, lastToken, formatSlice)
+				singleFormat := format[tempTokenStartIndex:tempTokenEndIndex]
+				lastToken, err = ApplyStyle(lastToken, singleFormat)
+				if err != nil {
+					log.Fatalf("Error parse style string in '%s' format string: %v", format, err)
+				}
+
+				tempTokenStartIndex = index
+
 				resParts = append(resParts, lastToken)
-
-				tempToken = tempToken[:0]
-				tempToken = append(tempToken, s)
-
-				formatSlice = formatSlice[:0]
 
 				inFormatGroup = false
 				inFormat = false
@@ -136,28 +147,17 @@ func Parse(format string) string {
 				lastIsFormatGroup = false
 				continue
 			}
-
-			tempToken = append(tempToken, s)
 			continue
 		}
 	}
 
 	if lastIsFormatGroup {
-		formatSlice = append(formatSlice, string(tempToken))
-		lastToken = groupStyle(format, lastToken, formatSlice)
+		singleFormat := format[tempTokenStartIndex:]
+		lastToken, _ = ApplyStyle(lastToken, singleFormat)
 		resParts = append(resParts, lastToken)
 	} else {
-		resParts = append(resParts, string(tempToken))
+		resParts = append(resParts, format[tempTokenStartIndex:])
 	}
 
 	return strings.Join(resParts, "")
-}
-
-func groupStyle(format string, token string, styles []string) string {
-	styleText, err := StyleBuilder(styles, token)
-	if err != nil {
-		log.Fatalf("Error parse style string in '%s' format string: %v", format, err)
-	}
-
-	return styleText
 }

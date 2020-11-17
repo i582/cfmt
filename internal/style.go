@@ -3,8 +3,6 @@ package internal
 import (
 	"fmt"
 	"strings"
-
-	"github.com/gookit/color"
 )
 
 // StyleBuilder is a function that returns a styled string based on the supplied style.
@@ -13,43 +11,49 @@ func StyleBuilder(styles []string, text string) (string, error) {
 		return "", fmt.Errorf("style string is empty")
 	}
 
-	var colors = make([]color.Color, 0, len(styles))
-	color.New()
-
+	var err error
 	for _, style := range styles {
-		if isHex(style) {
-			err := checkHex(style)
-			if err != nil {
-				return "", err
-			}
-			text = hexForegroundColorFunc(style, text)
-			continue
+		text, err = ApplyStyle(text, style)
+		if err != nil {
+			return "", err
 		}
-
-		if isBackgroundHex(style) {
-			rawHex := strings.TrimPrefix(style, "bg")
-			err := checkHex(rawHex)
-			if err != nil {
-				return "", err
-			}
-			text = hexBackgroundColorFunc(style, text)
-			continue
-		}
-
-		clr, ok := Map[style]
-		if !ok {
-			customStyleFunc, ok := CustomMap[style]
-			if !ok {
-				return "", fmt.Errorf("unknown style %s", style)
-			}
-			text = customStyleFunc(text)
-			continue
-		}
-		colors = append(colors, clr)
 	}
 
-	colorStyle := color.New(colors...)
-	return colorStyle.Sprint(text), nil
+	return text, nil
+}
+
+// StyleBuilder is a function that apply a style for string.
+func ApplyStyle(text, style string) (string, error) {
+	if isHex(style) {
+		err := checkHex(style)
+		if err != nil {
+			return "", err
+		}
+		text = hexForegroundColorFunc(style, text)
+		return text, nil
+	}
+
+	if isBackgroundHex(style) {
+		rawHex := strings.TrimPrefix(style, "bg")
+		err := checkHex(rawHex)
+		if err != nil {
+			return "", err
+		}
+		text = hexBackgroundColorFunc(style, text)
+		return text, nil
+	}
+
+	clr, ok := Map[style]
+	if !ok {
+		customStyleFunc, ok := CustomMap[style]
+		if !ok {
+			return "", fmt.Errorf("unknown style %s", style)
+		}
+		text = customStyleFunc(text)
+		return text, nil
+	}
+
+	return clr.Sprint(text), nil
 }
 
 func isHex(val string) bool {
