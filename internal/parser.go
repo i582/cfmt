@@ -90,7 +90,7 @@ func Parse(text string) string {
 				continue
 			}
 
-			if s == ':' {
+			if s == ':' && lastIsFormatGroup {
 				colonFound = true
 				continue
 			}
