@@ -92,6 +92,21 @@ cfmt.Println("This is a {{red color}}::code|bold")
 
 ![](doc/example4.svg)
 
+Also you can do whatever you want with the text, which is styled.
+
+```go
+cfmt.RegisterStyle("flag", func(s string) string {
+    return cfmt.Sprintf("{{--%s}}::green (-%c)", s, s[0])
+})
+```
+
+```go
+flag := "help"
+cfmt.Println("{{%s}}::flag ", flag)
+```
+
+![](doc/example8.svg)
+
 ### HEX colors
 
 If the standard colors are not enough for you, then you can use the colors in the Hex format (note, not all consoles support all colors fully!).
