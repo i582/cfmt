@@ -39,7 +39,7 @@ func ApplyStyle(text, style string) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		text = hexBackgroundColorFunc(style, text)
+		text = hexBackgroundColorFunc(rawHex, text)
 		return text, nil
 	}
 
