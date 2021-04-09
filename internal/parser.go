@@ -179,6 +179,11 @@ func Parse(text string) string {
 				inText = true
 
 				lastIsFormatGroup = false
+
+				if s == '{' {
+					index--
+				}
+
 				continue
 			}
 			continue

@@ -16,6 +16,12 @@ func TestParse(t *testing.T) {
 		return cfmt.Sprintf("{{%s}}::red|underline", s)
 	})
 
+	cfmt.RegisterStyle("flag", func(s string) string {
+		return cfmt.Sprintf("{{--%s}}::green (-%c)", s, s[0])
+	})
+
+	flag := "help"
+	cfmt.Printf("{{%s}}::flag \n", flag)
 	cfmt.Println("{{こんにちは, correct group}}::code  sdas")
 	cfmt.Println("{{привет, correct group}}::red|underline and {{other}}::red")
 	cfmt.Print("{{error group}} \n")
@@ -27,4 +33,5 @@ func TestParse(t *testing.T) {
 	cfmt.Printf(cfmt.Sprintf("{{background color %s}}::bg#ffff00\n", "hex color"))
 	cfmt.Printf("{{{hello}}}::red|underline\n")
 	cfmt.Printf("{{some test struct: %v}}::red|underline\n", TestStruct{"hello", 1})
+	cfmt.Println("{{hello}}::red{{world}}::green")
 }
