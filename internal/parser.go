@@ -122,6 +122,19 @@ func Parse(text string) string {
 			}
 
 			if s == '}' {
+				countBracketInRow := 0
+				for i := 0; ; i++ {
+					if index+i < formatLen && text[index+i] != '}' {
+						break
+					}
+					countBracketInRow++
+				}
+
+				if countBracketInRow > 2 {
+					index += countBracketInRow - 2 - 1
+					continue
+				}
+
 				endBracketFound = true
 				continue
 			}
