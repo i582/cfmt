@@ -5,12 +5,7 @@ import (
 )
 
 // CustomMap is the custom styles map
-var CustomMap = map[string]func(string) string{
-	"overline": overline,
-	"faint":    faint,
-	"reverse":  reverse,
-	"blink":    blink,
-}
+var CustomMap = map[string]func(string) string{}
 
 // Map is the styles map
 var Map = map[string]color.Color{
@@ -54,4 +49,7 @@ var Map = map[string]color.Color{
 	"italic":    color.OpItalic,
 	"crossout":  color.OpStrikethrough,
 	"underline": color.OpUnderscore,
+	"blink":     color.OpBlink,
+	"reverse":   color.OpReverse,
+	"concealed": color.OpConcealed,
 }

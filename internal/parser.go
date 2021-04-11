@@ -5,8 +5,8 @@ import (
 	"strings"
 )
 
-// Parse parses the passed format string and applies styles, returning a styled string.
-func Parse(text string) string {
+// ParseAndApply parses the passed format string and applies styles, returning a styled string.
+func ParseAndApply(text string) string {
 	var resParts = make([]string, 0, 50)
 
 	var err error
@@ -149,9 +149,9 @@ func Parse(text string) string {
 
 				// text from :: or previous | to current |
 				singleFormat := text[tempTokenStartIndex:tempTokenEndIndex]
-				lastToken, err = ApplyStyle(lastToken, singleFormat)
+				lastToken, err = applyStyle(lastToken, singleFormat)
 				if err != nil {
-					log.Fatalf("Error parse style string in '%s' text string: %v", text, err)
+					log.Fatalf("Error parse style string in '%s' text string: %v", strings.ReplaceAll(text, "\n", "\\n"), err)
 				}
 
 				// index after |
@@ -164,9 +164,9 @@ func Parse(text string) string {
 
 				// last format
 				singleFormat := text[tempTokenStartIndex:tempTokenEndIndex]
-				lastToken, err = ApplyStyle(lastToken, singleFormat)
+				lastToken, err = applyStyle(lastToken, singleFormat)
 				if err != nil {
-					log.Fatalf("Error parse style string in '%s' text string: %v", text, err)
+					log.Fatalf("Error parse style string in '%s' text string: %v", strings.ReplaceAll(text, "\n", "\\n"), err)
 				}
 
 				tempTokenStartIndex = index
@@ -192,9 +192,9 @@ func Parse(text string) string {
 
 	if lastIsFormatGroup {
 		singleFormat := text[tempTokenStartIndex:]
-		lastToken, err = ApplyStyle(lastToken, singleFormat)
+		lastToken, err = applyStyle(lastToken, singleFormat)
 		if err != nil {
-			log.Fatalf("Error parse style string in '%s' text string: %v", text, err)
+			log.Fatalf("Error parse style string in '%s' text string: %v", strings.ReplaceAll(text, "\n", "\\n"), err)
 		}
 		resParts = append(resParts, lastToken)
 	} else {

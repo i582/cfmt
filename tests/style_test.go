@@ -3,8 +3,6 @@ package tests
 import (
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
-
 	"github.com/i582/cfmt"
 	"github.com/i582/cfmt/internal"
 )
@@ -41,20 +39,28 @@ func TestStyleBuilder(t *testing.T) {
 			Error: "",
 		},
 		{
-			Value: []string{"overline", "reverse", "faint"},
+			Value: []string{"underline", "reverse"},
 			Error: "",
 		},
 		{
 			Value: []string{"bg#ff0", "bold"},
-			Error: "invalid hex: length of hex color must be 6",
+			Error: "",
 		},
 		{
 			Value: []string{"#ff0", "bold"},
-			Error: "invalid hex: length of hex color must be 6",
+			Error: "",
+		},
+		{
+			Value: []string{"#ff01", "bold"},
+			Error: "invalid '#ff01' hex color",
+		},
+		{
+			Value: []string{"bg#ff01", "bold"},
+			Error: "invalid '#ff01' hex color",
 		},
 		{
 			Value: []string{"some", "bold"},
-			Error: "unknown style some",
+			Error: "unknown style 'some'",
 		},
 		{
 			Value: []string{},
@@ -65,12 +71,12 @@ func TestStyleBuilder(t *testing.T) {
 	for _, suite := range suites {
 		_, err := internal.StyleBuilder(suite.Value, "")
 		if err == nil && suite.Error != "" {
-			t.Error(cmp.Diff("", suite.Error))
+			t.Errorf("mismatch\nwant: ''\nhave: %s", suite.Error)
 			continue
 		}
 
-		if err != nil && !cmp.Equal(err.Error(), suite.Error) {
-			t.Error(cmp.Diff(err.Error(), suite.Error))
+		if err != nil && err.Error() != suite.Error {
+			t.Errorf("mismatch\nwant: %s\nhave: %s", suite.Error, err.Error())
 		}
 	}
 }

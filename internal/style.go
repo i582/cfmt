@@ -3,6 +3,8 @@ package internal
 import (
 	"fmt"
 	"strings"
+
+	"github.com/gookit/color"
 )
 
 // StyleBuilder is a function that returns a styled string based on the supplied style.
@@ -13,7 +15,7 @@ func StyleBuilder(styles []string, text string) (string, error) {
 
 	var err error
 	for _, style := range styles {
-		text, err = ApplyStyle(text, style)
+		text, err = applyStyle(text, style)
 		if err != nil {
 			return "", err
 		}
@@ -22,14 +24,14 @@ func StyleBuilder(styles []string, text string) (string, error) {
 	return text, nil
 }
 
-// StyleBuilder is a function that apply a style for string.
-func ApplyStyle(text, style string) (string, error) {
+// applyStyle is a function that apply a style for string.
+func applyStyle(text, style string) (string, error) {
 	if isHex(style) {
 		err := checkHex(style)
 		if err != nil {
 			return "", err
 		}
-		text = hexForegroundColorFunc(style, text)
+		text = hexForegroundColor(style, text)
 		return text, nil
 	}
 
@@ -39,7 +41,7 @@ func ApplyStyle(text, style string) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		text = hexBackgroundColorFunc(rawHex, text)
+		text = hexBackgroundColor(rawHex, text)
 		return text, nil
 	}
 
@@ -47,7 +49,7 @@ func ApplyStyle(text, style string) (string, error) {
 	if !ok {
 		customStyleFunc, ok := CustomMap[style]
 		if !ok {
-			return "", fmt.Errorf("unknown style %s", style)
+			return "", fmt.Errorf("unknown style '%s'", style)
 		}
 		text = customStyleFunc(text)
 		return text, nil
@@ -56,17 +58,27 @@ func ApplyStyle(text, style string) (string, error) {
 	return clr.Sprint(text), nil
 }
 
+func hexBackgroundColor(cl string, text string) string {
+	return color.HEX(cl, true).Sprint(text)
+}
+
+func hexForegroundColor(cl string, text string) string {
+	return color.HEX(cl).Sprint(text)
+}
+
 func isHex(val string) bool {
 	return strings.HasPrefix(val, "#")
 }
 
-func checkHex(val string) error {
-	if len(val) != 7 {
-		return fmt.Errorf("invalid hex: length of hex color must be 6")
-	}
-	return nil
-}
-
 func isBackgroundHex(val string) bool {
 	return strings.HasPrefix(val, "bg#")
+}
+
+func checkHex(val string) error {
+	rgb := color.HexToRGB(val)
+	if len(rgb) > 0 {
+		return nil
+	}
+
+	return fmt.Errorf("invalid '%s' hex color", val)
 }

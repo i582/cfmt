@@ -25,8 +25,7 @@ func RegisterStyle(name string, fn func(string) string) {
 // Sprint is the same as fmt.
 func Sprint(a ...interface{}) string {
 	text := fmt.Sprint(a...)
-	parsed := internal.Parse(text)
-	return parsed
+	return internal.ParseAndApply(text)
 }
 
 // Fprint is the same as fmt.
@@ -59,8 +58,7 @@ func Println(a ...interface{}) (n int, err error) {
 // Sprintf is the same as fmt.
 func Sprintf(format string, a ...interface{}) string {
 	text := fmt.Sprintf(format, a...)
-	parsed := internal.Parse(text)
-	return parsed
+	return internal.ParseAndApply(text)
 }
 
 // Fprintf is the same as fmt.
@@ -76,12 +74,18 @@ func Printf(format string, a ...interface{}) (n int, err error) {
 
 // Fatalf is the same as fmt.
 func Fatalf(format string, a ...interface{}) {
-	Printf(format, a...)
+	_, _ = Printf(format, a...)
 	os.Exit(1)
 }
 
 // Fatal is the same as fmt.
 func Fatal(a ...interface{}) {
-	Print(a...)
+	_, _ = Print(a...)
+	os.Exit(1)
+}
+
+// Fatalln is the same as fmt.
+func Fatalln(a ...interface{}) {
+	_, _ = Println(a...)
 	os.Exit(1)
 }
