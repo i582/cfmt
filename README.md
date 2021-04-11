@@ -205,7 +205,7 @@ And colors in HEX format. See [HEX colors](#hex-colors) part.
 
 ## Motivation
 
-The existing libraries for styling the output are very powerful and this library builds on one of them ([gookit / color] (https://github.com/gookit/color)). However, they are not very useful for styling certain words or sentences, since you need to use `Sprintf` and put the styled ones in a format string, which greatly reduces readability if you need to style many elements.
+The existing libraries for styling the output are very powerful and this library builds on one of them ([gookit/color](https://github.com/gookit/color)). However, they are not very useful for styling certain words or sentences, since you need to use `Sprintf` and put the styled ones in a format string, which greatly reduces readability if you need to style many elements.
 
 I believe that the library will be useful primarily for formatting ready-made text, for reference or examples. However, in other cases it should be just as convenient.
 
