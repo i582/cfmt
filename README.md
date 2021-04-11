@@ -109,7 +109,7 @@ cfmt.Println("{{%s}}::flag ", flag)
 
 ### HEX colors
 
-If the standard colors are not enough for you, then you can use the colors in the Hex format (note, not all consoles support all colors fully!).
+If the standard colors are not enough for you, then you can use the colors in the `HEX` format (note, not all terminals support all colors fully!).
 
 ```go
 cfmt.Println("This is a {{red color}}::#ff0000")
@@ -123,7 +123,7 @@ To set the background color, you need to add the prefix `bg` to the color, in th
 cfmt.Println("This is a {{red color}}::bgRed")
 ```
 
-For HEX it will look like this:
+For `HEX` it will look like this:
 
 ```go
 cfmt.Println("This is a {{red color}}::bg#ff0000")
@@ -178,16 +178,15 @@ cfmt.Print(`
 
 ## Supported colors and styles
 
-| Styles                                                 |
-| ------------------------------------------------------ |
-| *italic*                                               |
-| **bold**                                               |
-| ~~crossout~~                                           |
-| <ins>underline</ins>                                   |
-| <span style="text-decoration:overline">overline</span> |
-|faint|
-|reverse|
-|blink|
+| Styles               |
+| -------------------- |
+| *italic*             |
+| **bold**             |
+| ~~crossout~~         |
+| <ins>underline</ins> |
+| concealed            |
+| reverse              |
+| blink                |
 
 
 | Colors  |              |               |           |
@@ -206,7 +205,7 @@ And colors in HEX format. See [HEX colors](#hex-colors) part.
 
 ## Motivation
 
-The existing libraries for styling output are very powerful, and this library is built on two of them (gookit/color and muesli/termenv). However, they are not very convenient to use for styling specific words or sentences, since you need to use `Sprintf` and put the stylized into a format string, which greatly reduces readability if you need to style many elements.
+The existing libraries for styling the output are very powerful and this library builds on one of them ([gookit / color] (https://github.com/gookit/color)). However, they are not very useful for styling certain words or sentences, since you need to use `Sprintf` and put the styled ones in a format string, which greatly reduces readability if you need to style many elements.
 
 I believe that the library will be useful primarily for formatting ready-made text, for reference or examples. However, in other cases it should be just as convenient.
 
