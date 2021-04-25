@@ -3,7 +3,7 @@ package tests
 import (
 	"testing"
 
-	"github.com/i582/cfmt"
+	"github.com/i582/cfmt/cmd/cfmt"
 	"github.com/i582/cfmt/internal"
 )
 

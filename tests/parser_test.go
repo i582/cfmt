@@ -1,9 +1,11 @@
 package tests
 
 import (
+	"fmt"
 	"testing"
 
-	"github.com/i582/cfmt"
+	"github.com/i582/cfmt/cmd/cfmt"
+	"github.com/i582/cfmt/cmd/clog"
 )
 
 type TestStruct struct {
@@ -35,4 +37,50 @@ func TestParse(t *testing.T) {
 	cfmt.Printf("{{{hello}}}::red|underline\n")
 	cfmt.Printf("{{some test struct: %v}}::red|underline\n", TestStruct{"hello", 1})
 	cfmt.Println("{{hello}}::red{{world}}::green")
+
+	clog.Print(cfmt.Sprintln("{{some group}}::red sfafs"))
+	clog.Printf("{{hex %s}}::#ff00ff sfas\n", "color group")
+	clog.Println("{{hello}}::red{{world}}::green")
+}
+
+func TestParseFatal(t *testing.T) {
+	clog.Fatal("{{hello}}::red{{world}}::green")
+}
+
+func TestParseFatalf(t *testing.T) {
+	clog.Fatalf("{{hello}}::red{{world}}::green")
+}
+
+func TestParseFatalln(t *testing.T) {
+	clog.Fatalln("{{hello}}::red{{world}}::green")
+}
+
+func TestParsePanic(t *testing.T) {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println("Passed.")
+		}
+	}()
+
+	clog.Panic("{{hello}}::red{{world}}::green")
+}
+
+func TestParsePanicf(t *testing.T) {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println("Passed.")
+		}
+	}()
+
+	clog.Panicf("{{hello}}::red{{world}}::green")
+}
+
+func TestParsePanicln(t *testing.T) {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println("Passed.")
+		}
+	}()
+
+	clog.Panicln("{{hello}}::red{{world}}::green")
 }

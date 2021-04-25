@@ -4,7 +4,7 @@
 
 # cfmt
 
-**cfmt** is a small library for **simple and convenient formatted stylized output** to the console, providing an interface that is exactly the same as the standard `fmt` library.
+**cfmt** is a small library for **simple and convenient formatted stylized output** to the console, providing an interface that is exactly the same as the standard `fmt` and `log` libraries.
 
 ## Table of Contents
 
@@ -24,12 +24,22 @@
 ## Install
 
 ```
-go get -u -v github.com/i582/cfmt
+go get -v github.com/i582/cfmt
 ```
 
 ## Usage
 
-To switch to `cfmt` anywhere in the code, it is enough to add one letter `c` to `fmt` and you get all the possibilities, the library is fully compatible with the standard library `fmt`.
+To switch to `cfmt` anywhere in the code, it is enough to add one letter `c` to `fmt` (or to `log`), import the required part (`cfmt` or `clog`):
+
+```go
+import (
+	"github.com/i582/cfmt/cmd/cfmt"
+	// or
+	"github.com/i582/cfmt/cmd/clog"
+)
+```
+
+and you get all the possibilities, the library is fully compatible with the standard libraries `fmt` and `log`
 
 ### Simple usage
 
@@ -109,7 +119,7 @@ cfmt.Println("{{%s}}::flag ", flag)
 
 ### HEX colors
 
-If the standard colors are not enough for you, then you can use the colors in the `HEX` format (note, not all terminals support all colors fully!).
+If the standard colors are not enough for you, then you can use the colors in the `HEX` format (*NOTE: not all terminals support all colors fully!*).
 
 ```go
 cfmt.Println("This is a {{red color}}::#ff0000")
@@ -207,7 +217,7 @@ And colors in HEX format. See [HEX colors](#hex-colors) part.
 
 The existing libraries for styling the output are very powerful and this library builds on one of them ([gookit/color](https://github.com/gookit/color)). However, they are not very useful for styling certain words or sentences, since you need to use `Sprintf` and put the styled ones in a format string, which greatly reduces readability if you need to style many elements.
 
-I believe that the library will be useful primarily for formatting ready-made text, for reference or examples. However, in other cases it should be just as convenient.
+I believe that the library will be useful primarily for formatting ready-made text, for reference, or examples. However, in other cases, it should be just as convenient.
 
 The library aims to make formatted text look readable in code, even with complex formatting.
 
