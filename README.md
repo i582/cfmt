@@ -34,7 +34,7 @@ To switch to `cfmt` anywhere in the code, it is enough to add one letter `c` to 
 ```go
 import (
 	"github.com/i582/cfmt/cmd/cfmt"
-    // or
+	// or
 	"github.com/i582/cfmt/cmd/clog"
 )
 ```
