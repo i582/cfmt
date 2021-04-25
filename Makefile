@@ -1,6 +1,3 @@
-install:
-	go install .
-
 check:
 	@echo "running tests..."
 	@go test -count 1 -v ./...
