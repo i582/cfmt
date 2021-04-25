@@ -13,7 +13,7 @@ import (
 // It will look like this:
 //
 //   cfmt.RegisterStyle("code", func(s string) string {
-//	  return cfmt.Sprintf("{{%s}}::red|underline", s)
+//	   return cfmt.Sprintf("{{%s}}::red|underline", s)
 //   })
 //
 // The first argument is the name by which this style will be used,
@@ -22,70 +22,47 @@ func RegisterStyle(name string, fn func(string) string) {
 	internal.CustomMap[name] = fn
 }
 
-// Sprint is the same as fmt.
+// Sprint is the same as fmt.Sprint.
 func Sprint(a ...interface{}) string {
-	text := fmt.Sprint(a...)
-	return internal.ParseAndApply(text)
+	return internal.ParseAndApply(fmt.Sprint(a...))
 }
 
-// Fprint is the same as fmt.
+// Fprint is the same as fmt.Fprint.
 func Fprint(w io.Writer, a ...interface{}) (n int, err error) {
-	text := Sprint(a...)
-	return fmt.Fprint(w, text)
+	return fmt.Fprint(w, Sprint(a...))
 }
 
-// Print is the same as fmt.
+// Print is the same as fmt.Print.
 func Print(a ...interface{}) (n int, err error) {
 	return Fprint(os.Stdout, a...)
 }
 
-// Sprintln is the same as fmt.
+// Sprintln is the same as fmt.Sprintln.
 func Sprintln(a ...interface{}) string {
 	return Sprint(a...) + "\n"
 }
 
-// Fprintln is the same as fmt.
+// Fprintln is the same as fmt.Fprintln.
 func Fprintln(w io.Writer, a ...interface{}) (n int, err error) {
-	text := Sprintln(a...)
-	return fmt.Fprint(w, text)
+	return fmt.Fprint(w, Sprintln(a...))
 }
 
-// Println is the same as fmt.
+// Println is the same as fmt.Println.
 func Println(a ...interface{}) (n int, err error) {
 	return Fprintln(os.Stdout, a...)
 }
 
-// Sprintf is the same as fmt.
+// Sprintf is the same as fmt.Sprintf.
 func Sprintf(format string, a ...interface{}) string {
-	text := fmt.Sprintf(format, a...)
-	return internal.ParseAndApply(text)
+	return Sprint(fmt.Sprintf(format, a...))
 }
 
-// Fprintf is the same as fmt.
+// Fprintf is the same as fmt.Fprintf.
 func Fprintf(w io.Writer, format string, a ...interface{}) (n int, err error) {
-	text := Sprintf(format, a...)
-	return fmt.Fprint(w, text)
+	return fmt.Fprint(w, Sprintf(format, a...))
 }
 
-// Printf is the same as fmt.
+// Printf is the same as fmt.Printf.
 func Printf(format string, a ...interface{}) (n int, err error) {
 	return Fprintf(os.Stdout, format, a...)
-}
-
-// Fatalf is the same as fmt.
-func Fatalf(format string, a ...interface{}) {
-	_, _ = Printf(format, a...)
-	os.Exit(1)
-}
-
-// Fatal is the same as fmt.
-func Fatal(a ...interface{}) {
-	_, _ = Print(a...)
-	os.Exit(1)
-}
-
-// Fatalln is the same as fmt.
-func Fatalln(a ...interface{}) {
-	_, _ = Println(a...)
-	os.Exit(1)
 }
