@@ -43,18 +43,6 @@ func TestParse(t *testing.T) {
 	clog.Println("{{hello}}::red{{world}}::green")
 }
 
-func TestParseFatal(t *testing.T) {
-	clog.Fatal("{{hello}}::red{{world}}::green")
-}
-
-func TestParseFatalf(t *testing.T) {
-	clog.Fatalf("{{hello}}::red{{world}}::green")
-}
-
-func TestParseFatalln(t *testing.T) {
-	clog.Fatalln("{{hello}}::red{{world}}::green")
-}
-
 func TestParsePanic(t *testing.T) {
 	defer func() {
 		if err := recover(); err != nil {
