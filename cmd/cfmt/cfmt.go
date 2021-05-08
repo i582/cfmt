@@ -4,9 +4,23 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"sync/atomic"
 
 	"github.com/i582/cfmt/internal"
 )
+
+var disableColors int32
+
+// DisableColors globally disables colors.
+// After parsing, no styles will be applied and the output will be clean text.
+func DisableColors() {
+	atomic.AddInt32(&disableColors, 1)
+}
+
+// EnableColors globally enables colors.
+func EnableColors() {
+	atomic.AddInt32(&disableColors, -1)
+}
 
 // RegisterStyle registers a new custom style.
 //
@@ -24,7 +38,7 @@ func RegisterStyle(name string, fn func(string) string) {
 
 // Sprint is the same as fmt.Sprint.
 func Sprint(a ...interface{}) string {
-	return internal.ParseAndApply(fmt.Sprint(a...))
+	return internal.ParseAndApply(fmt.Sprint(a...), disableColors == 1)
 }
 
 // Fprint is the same as fmt.Fprint.
