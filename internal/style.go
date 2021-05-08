@@ -8,14 +8,14 @@ import (
 )
 
 // StyleBuilder is a function that returns a styled string based on the supplied style.
-func StyleBuilder(styles []string, text string) (string, error) {
+func StyleBuilder(styles []string, text string, disable bool) (string, error) {
 	if len(styles) == 0 {
 		return "", fmt.Errorf("style string is empty")
 	}
 
 	var err error
 	for _, style := range styles {
-		text, err = applyStyle(text, style)
+		text, err = applyStyle(text, style, disable)
 		if err != nil {
 			return "", err
 		}
@@ -25,7 +25,11 @@ func StyleBuilder(styles []string, text string) (string, error) {
 }
 
 // applyStyle is a function that apply a style for string.
-func applyStyle(text, style string) (string, error) {
+func applyStyle(text, style string, disable bool) (string, error) {
+	if disable {
+		return text, nil
+	}
+
 	if isHex(style) {
 		err := checkHex(style)
 		if err != nil {

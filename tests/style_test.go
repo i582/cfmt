@@ -69,7 +69,7 @@ func TestStyleBuilder(t *testing.T) {
 	}
 
 	for _, suite := range suites {
-		_, err := internal.StyleBuilder(suite.Value, "")
+		_, err := internal.StyleBuilder(suite.Value, "", false)
 		if err == nil && suite.Error != "" {
 			t.Errorf("mismatch\nwant: ''\nhave: %s", suite.Error)
 			continue
