@@ -37,6 +37,7 @@ func TestParse(t *testing.T) {
 	cfmt.Printf("{{{hello}}}::red|underline\n")
 	cfmt.Printf("{{some test struct: %v}}::red|underline\n", TestStruct{"hello", 1})
 	cfmt.Println("{{hello}}::red{{world}}::green")
+	cfmt.Println("errorf: " + cfmt.Errorf("{{hello}}::red{{world}}::green").Error())
 
 	clog.Print(cfmt.Sprintln("{{some group}}::red sfafs"))
 	clog.Printf("{{hex %s}}::#ff00ff sfas\n", "color group")
