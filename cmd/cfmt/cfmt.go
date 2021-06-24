@@ -80,3 +80,8 @@ func Fprintf(w io.Writer, format string, a ...interface{}) (n int, err error) {
 func Printf(format string, a ...interface{}) (n int, err error) {
 	return Fprintf(os.Stdout, format, a...)
 }
+
+// Errorf is the same as fmt.Errorf.
+func Errorf(format string, a ...interface{}) error {
+	return fmt.Errorf(Sprintf(format, a...))
+}
